@@ -14,34 +14,39 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.views.generic import RedirectView
 from django.conf.urls.static import static
 from django.conf import settings
-from django.views.generic import RedirectView
-from django.urls import include
 from django.contrib import admin
 from django.urls import path
+
+# Use include() to add URLS from the catalog application and authentication system
+from django.urls import include
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-# Use include() to add paths from the catalog application
 
 urlpatterns += [
     path('catalog/', include('catalog.urls')),
 ]
 
-# Add URL maps to redirect the base URL to our application
-urlpatterns += [
-    path('', RedirectView.as_view(url='catalog/', permanent=True)),
-]
 
-# Use static() to add URL mapping to serve static files during development (only)
+# Use static() to add url mapping to serve static files during development (only)
+
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# Add Django site authentication urls (for login, logout, password management)
 
+# Add URL maps to redirect the base URL to our application
+urlpatterns += [
+    path('', RedirectView.as_view(url='/catalog/', permanent=True)),
+]
+
+
+# Add Django site authentication urls (for login, logout, password management)
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
 ]

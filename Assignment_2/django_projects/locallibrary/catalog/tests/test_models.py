@@ -6,6 +6,8 @@ from django.test import TestCase
 from django.test import TestCase
 
 from catalog.models import Author
+from catalog.models import Book
+from catalog.models import Genre
 
 
 class AuthorModelTest(TestCase):
@@ -38,3 +40,38 @@ class AuthorModelTest(TestCase):
         author = Author.objects.get(id=1)
         # This will also fail if the urlconf is not defined.
         self.assertEqual(author.get_absolute_url(), '/catalog/author/1')
+
+
+class BookModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Book.objects.create(title='Atomic Habits')
+
+    def test_book_title_label(self):
+        book = Book.objects.get(id=1)
+        field_label = book._meta.get_field('title').verbose_name
+        self.assertEqual(field_label, 'title')
+
+    def test_book_title_max_length(self):
+        book = Book.objects.get(id=1)
+        max_length = book._meta.get_field('title').max_length
+        self.assertEqual(max_length, 200)
+
+    def test_object_name_is_book_title(self):
+        book = Book.objects.get(id=1)
+        expected_object_name = f'{book.title}'
+        self.assertEqual(str(book), expected_object_name)
+
+    def test_get_absolute_url(self):
+        book = Book.objects.get(id=1)
+        self.assertEqual(book.get_absolute_url(), '/catalog/book/1')
+
+    def test_language_label(self):
+        book = Book.objects.get(id=1)
+        field_label = book._meta.get_field('language').verbose_name
+        self.assertEqual(field_label, 'language')
+
+    def test_author_label(self):
+        book = Book.objects.get(id=1)
+        field_label = book._meta.get_field('author').verbose_name
+        self.assertEqual(field_label, 'author')
