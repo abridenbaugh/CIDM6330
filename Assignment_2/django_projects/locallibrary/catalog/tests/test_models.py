@@ -1,10 +1,5 @@
 from django.test import TestCase
 
-# Create your tests here.
-
-
-from django.test import TestCase
-
 from catalog.models import Author
 from catalog.models import Book
 from catalog.models import Genre
@@ -75,3 +70,8 @@ class BookModelTest(TestCase):
         book = Book.objects.get(id=1)
         field_label = book._meta.get_field('author').verbose_name
         self.assertEqual(field_label, 'author')
+
+    def test_genre_label(self):
+        book = Book.objects.get(id=1)
+        field_label = book._meta.get_field('genre').verbose_name
+        self.assertEqual(field_label, 'genre')
