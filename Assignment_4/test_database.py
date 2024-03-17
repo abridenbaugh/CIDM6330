@@ -44,7 +44,7 @@ def test_database_manager_create_table(database_manager):
 
     cursor.execute(
         ''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='bookmarks' ''')
-
+ 
     assert cursor.fetchone()[0] == 1
 
     # cleanup
@@ -81,3 +81,5 @@ def test_database_manager_add_bookmark(database_manager):
     cursor = conn.cursor()
     cursor.execute(''' SELECT * FROM bookmarks WHERE title='test_title' ''')
     assert cursor.fetchone()[0] == 1
+
+
